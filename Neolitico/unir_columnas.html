@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Unir Columnas: Era Neolítica</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 32px;
+        }
+        h1 {
+            text-align: center;
+            color: #3a4d39;
+            margin-bottom: 24px;
+        }
+        #timer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 18px;
+            background: linear-gradient(90deg, #e0eafc 60%, #c7d2fe 100%);
+            border-radius: 18px;
+            width: 220px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px 0 10px 0;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.13);
+            border: 2px solid #3b82f6;
+            transition: box-shadow 0.2s;
+        }
+        #timer.urgente {
+            background: linear-gradient(90deg, #fee2e2 60%, #fecaca 100%);
+            color: #dc2626;
+            border-color: #dc2626;
+            animation: parpadeo 0.7s infinite alternate;
+        }
+        @keyframes parpadeo {
+            from { box-shadow: 0 0 12px #dc2626; }
+            to   { box-shadow: 0 0 24px #f87171; }
+        }
+        .columns {
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        .column {
+            flex: 1;
+        }
+        .column ul {
+            list-style: none;
+            padding: 0;
+        }
+        .column li {
+            background: #e8f0e3;
+            margin: 12px 0;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .column li.selected {
+            background: #b6e3a1;
+        }
+        .column li.matched {
+            background: #7bb661;
+            color: #fff;
+            pointer-events: none;
+        }
+        .column li:hover:not(.matched):not(.selected) {
+            background: #cbe7b7;
+        }
+        .column li img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #b6e3a1;
+            background: #fff;
+        }
+        .match-line {
+            height: 2px;
+            background: #7bb661;
+            margin: 18px 0;
+            border-radius: 2px;
+            opacity: 0.5;
+        }
+        .instructions {
+            text-align: center;
+            color: #5a6d57;
+            margin-bottom: 18px;
+        }
+        #result {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 18px;
+            font-size: 1.1em;
+        }
+        .reset-btn {
+            display: block;
+            margin: 24px auto 0 auto;
+            padding: 10px 24px;
+            background: #7bb661;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .reset-btn:hover {
+            background: #5a8c45;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Unir Columnas: Era Neolítica</h1>
+        <div id="timer">
+            <span id="time">01:00</span>
+        </div>
+        <div class="instructions">
+            Relaciona cada concepto de la columna izquierda con su definición en la columna derecha.
+        </div>
+        <div class="columns">
+            <div class="column">
+                <ul id="left-list">
+                    <li data-index="0">
+                        <img src="https://neolitico.org/wp-content/uploads/2023/12/Neolitico.jpg" alt="Neolítico">
+                        Neolítico
+                    </li>
+                    <li data-index="1">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDG4Fjk293ekwqEiGSRTqdVRGh_isGO8qR6CFco_Iy1Od3Xy6kWxyrF3DaVLKqrvnUgrE&usqp=CAU" alt="Aldea">
+                        Aldea
+                    </li>
+                    <li data-index="2">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjqDi1T_7e3B1fXq8BJJVZS4R-Fyf9qLeDUISfoEixe4BweV4W-tJ9liYcWBn2Psy6UpNmwXBqYtIXQK7jLduYT2ekzAY9153XxPJGu6h2HTANMSC8-hZjPZDKaN1YJRIfm-9OFaWNreslc-2lKfaTm1BBUF8vMywdGr0woWteSrw5VCL_bmB3aGy8JoA=w640-h480" alt="Rueda, cerámica y telar">
+                        Rueda, cerámica y telar
+                    </li>
+                    <li data-index="3">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5sYw7jPNe7VPURJaKtSQ7ezpWvgHm-H5xXnW_xLp-j54ZQ9zwf9YFNhkjZqCQ_KS5S8k&usqp=CAU" alt="Ganadería">
+                        Ganadería
+                    </li>
+                    <li data-index="4">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtgrV8Plsf3gOrr6rfnr8nDgECxQPRN2XIQw&s" alt="Agricultura">
+                        Agricultura
+                    </li>
+                </ul>
+            </div>
+            <div class="column">
+                <ul id="right-list">
+                    <li data-index="0">Como se llama la tercera etapa de la edad de piedra.</li>
+                    <li data-index="1">Cómo se llama donde habítaban los del neolítico.</li>
+                    <li data-index="2">Nuevos inventos del neolítico.</li>
+                    <li data-index="3">Comó se le llamo a la  domésticación de los animales en el neolítico.</li>
+                    <li data-index="4">Como se llamaban a la siembra de trigo y cebada en el neolítico.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="match-line"></div>
+        <div id="result" class="instructions"></div>
+        <button class="reset-btn" onclick="window.location.reload()">Reiniciar</button>
+    </div>
+    <script>
+        // Temporizador de 1 minuto
+        let tiempo = 60;
+        const timerSpan = document.getElementById("time");
+        const timerDiv = document.getElementById("timer");
+        const interval = setInterval(() => {
+            tiempo--;
+            let min = String(Math.floor(tiempo/60)).padStart(2,'0');
+            let seg = String(tiempo%60).padStart(2,'0');
+            timerSpan.textContent = `${min}:${seg}`;
+            if (tiempo <= 10) {
+                timerDiv.classList.add("urgente");
+            } else {
+                timerDiv.classList.remove("urgente");
+            }
+            if (tiempo <= 0) {
+                clearInterval(interval);
+                timerSpan.textContent = "00:00";
+                // Bloquea la interacción
+                document.querySelectorAll('li').forEach(li => li.style.pointerEvents = "none");
+                document.getElementById('result').textContent = "¡Tiempo agotado!";
+                document.getElementById('result').style.color = "#d32f2f";
+                setTimeout(() => {
+                    window.location.href = "../Neolitico/juegos_Neolitico.html";
+                }, 1800);
+            }
+        }, 1000);
+
+        // Interactividad unir columnas
+        let selectedLeft = null;
+        let selectedRight = null;
+        const leftItems = document.querySelectorAll('#left-list li');
+        const rightItems = document.querySelectorAll('#right-list li');
+        const matches = {};
+        const resultDiv = document.getElementById('result');
+
+        leftItems.forEach(item => {
+            item.addEventListener('click', function() {
+                if (item.classList.contains('matched')) return;
+                leftItems.forEach(li => li.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedLeft = this;
+                checkMatch();
+            });
+        });
+
+        rightItems.forEach(item => {
+            item.addEventListener('click', function() {
+                if (item.classList.contains('matched')) return;
+                rightItems.forEach(li => li.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedRight = this;
+                checkMatch();
+            });
+        });
+
+        function checkMatch() {
+            if (selectedLeft && selectedRight) {
+                const leftIndex = selectedLeft.getAttribute('data-index');
+                const rightIndex = selectedRight.getAttribute('data-index');
+                if (!matches[leftIndex] && !Object.values(matches).includes(rightIndex)) {
+                    matches[leftIndex] = rightIndex;
+                    selectedLeft.classList.remove('selected');
+                    selectedRight.classList.remove('selected');
+                    selectedLeft.classList.add('matched');
+                    selectedRight.classList.add('matched');
+                    selectedLeft = null;
+                    selectedRight = null;
+                    if (Object.keys(matches).length === leftItems.length) {
+                        showResult();
+                    }
+                } else {
+                    // Si ya está emparejado, deselecciona
+                    selectedLeft.classList.remove('selected');
+                    selectedRight.classList.remove('selected');
+                    selectedLeft = null;
+                    selectedRight = null;
+                }
+            }
+        }
+
+        function showResult() {
+            let correct = 0;
+            // Respuestas correctas: 0-0, 1-1, 2-2, 3-3, 4-4
+            for (let i = 0; i < leftItems.length; i++) {
+                if (matches[i] == i) correct++;
+            }
+            if (correct === leftItems.length) {
+                resultDiv.textContent = "¡Correcto! Todas las relaciones son correctas. 🌟";
+                resultDiv.style.color = "#388e3c";
+            } else {
+                resultDiv.textContent = `Has acertado ${correct} de ${leftItems.length}. ¡Intenta de nuevo!`;
+                resultDiv.style.color = "#d32f2f";
+            }
+        }
+    </script>
+</body>
+</html>

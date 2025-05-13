@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sopa de Letras - Era Mesolítica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: radial-gradient(circle at 60% 40%, #e0eafc 60%, #b6c6e6 100%);
+            font-family: 'Quicksand', 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #2d3a4b;
+            margin-top: 35px;
+            letter-spacing: 3px;
+            font-size: 2.5rem;
+            font-family: 'Montserrat', sans-serif;
+            text-shadow: 0 2px 8px #b6c6e6;
+        }
+        .timer {
+            background: linear-gradient(90deg, #26a69a 0%, #80cbc4 100%);
+            border-radius: 40px;
+            box-shadow: 0 4px 24px rgba(44, 62, 80, 0.12);
+            padding: 18px 55px;
+            font-size: 2.2rem;
+            color: #fff;
+            margin-bottom: 32px;
+            margin-top: 18px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            border: 3px solid #1a5d57;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+        }
+        .sopa-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 28px;
+            box-shadow: 0 10px 40px rgba(44, 62, 80, 0.18);
+            padding: 38px 38px 28px 38px;
+            margin-bottom: 35px;
+            border: 2px solid #b2dfdb;
+        }
+        table.sopa {
+            border-collapse: separate;
+            border-spacing: 6px;
+            margin: auto;
+        }
+        table.sopa td {
+            width: 44px;
+            height: 44px;
+            text-align: center;
+            font-size: 1.6rem;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #e0f7fa 60%, #b2ebf2 100%);
+            color: #00695c;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.10);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            user-select: none;
+        }
+        table.sopa td.selected {
+            background: linear-gradient(135deg, #80cbc4 60%, #4db6ac 100%);
+            color: #fff;
+            box-shadow: 0 2px 12px #26a69a55;
+        }
+        table.sopa td.found {
+            /* Cambia el color de fondo de las letras encontradas a dorado */
+            background: linear-gradient(135deg, #ffd700 60%, #ffb300 100%);
+            color: #fff;
+            text-shadow: 0 1px 4px #b8860b88;
+        }
+        .palabras-lado {
+            background: rgba(255,255,255,0.97);
+            border-radius: 24px;
+            box-shadow: 0 6px 24px rgba(44, 62, 80, 0.13);
+            padding: 32px 28px;
+            border: 2px solid #b2dfdb;
+            min-width: 220px;
+            margin-left: 0;
+            margin-top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .palabras-lado h2 {
+            font-size: 1.3rem;
+            color: #00897b;
+            margin-bottom: 18px;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+        }
+        .palabras-lado span {
+            display: block;
+            background: linear-gradient(90deg, #e0f7fa 60%, #b2ebf2 100%);
+            color: #00897b;
+            border-radius: 16px;
+            padding: 8px 22px;
+            margin-bottom: 10px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.09);
+            border: 1.5px solid #b2dfdb;
+            transition: background 0.2s, color 0.2s;
+        }
+        .palabras-lado span.found {
+            background: linear-gradient(90deg, #26a69a 60%, #00897b 100%);
+            color: #fff;
+            text-decoration: line-through;
+            border: 1.5px solid #00897b;
+        }
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 18px;
+            }
+            .palabras-lado {
+                margin-left: 0;
+                margin-top: 18px;
+                align-items: center;
+            }
+        }
+        @media (max-width: 600px) {
+            .sopa-container { padding: 10px; }
+            table.sopa td { width: 28px; height: 28px; font-size: 1rem; }
+            .timer { font-size: 1.2rem; padding: 8px 18px; }
+            .palabras-lado { padding: 12px 8px; min-width: 120px; }
+            .palabras-lado span { font-size: 0.95rem; padding: 6px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Sopa de Letras: Era Mesolítica</h1>
+    <div class="timer" id="timer">01:00</div>
+    <div class="main-content">
+        <div class="sopa-container">
+            <table class="sopa" id="sopa"></table>
+        </div>
+        <div class="palabras-lado" id="palabras-lado">
+            <h2>Palabras a buscar</h2>
+            <!-- Las palabras se agregan por JS -->
+        </div>
+    </div>
+    <script>
+        // Palabras relacionadas con el Mesolítico
+        const palabras = [
+            "CAZA", "ARCO", "PESCA", "FUEGO", "TRIBU",
+            "ARTE", "PIEDRA", "MICROLITOS", "HERRAMIENTA", "RECOLECCION"
+        ];
+
+        // Tamaño de la sopa
+        const filas = 10, columnas = 10;
+
+        // Inicializar la matriz de la sopa
+        let sopa = Array.from({length: filas}, () => Array(columnas).fill(''));
+
+        // Direcciones posibles: [dx, dy]
+        const direcciones = [
+            [1, 0], [0, 1], [1, 1], [-1, 0], [0, -1], [-1, -1], [1, -1], [-1, 1]
+        ];
+
+        // Colocar palabras en la sopa
+        function colocarPalabra(palabra) {
+            palabra = palabra.toUpperCase();
+            let colocado = false, intentos = 0;
+            while (!colocado && intentos < 100) {
+                const dir = direcciones[Math.floor(Math.random() * direcciones.length)];
+                const x = Math.floor(Math.random() * filas);
+                const y = Math.floor(Math.random() * columnas);
+                let fits = true;
+                for (let i = 0; i < palabra.length; i++) {
+                    const nx = x + dir[0] * i;
+                    const ny = y + dir[1] * i;
+                    if (
+                        nx < 0 || nx >= filas || ny < 0 || ny >= columnas ||
+                        (sopa[nx][ny] && sopa[nx][ny] !== palabra[i])
+                    ) {
+                        fits = false;
+                        break;
+                    }
+                }
+                if (fits) {
+                    for (let i = 0; i < palabra.length; i++) {
+                        const nx = x + dir[0] * i;
+                        const ny = y + dir[1] * i;
+                        sopa[nx][ny] = palabra[i];
+                    }
+                    colocado = true;
+                }
+                intentos++;
+            }
+        }
+
+        palabras.forEach(colocarPalabra);
+
+        // Rellenar espacios vacíos con letras aleatorias
+        const letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+        for (let i = 0; i < filas; i++) {
+            for (let j = 0; j < columnas; j++) {
+                if (!sopa[i][j]) {
+                    sopa[i][j] = letras[Math.floor(Math.random() * letras.length)];
+                }
+            }
+        }
+
+        // Renderizar la sopa de letras
+        const tabla = document.getElementById('sopa');
+        for (let i = 0; i < filas; i++) {
+            const tr = document.createElement('tr');
+            for (let j = 0; j < columnas; j++) {
+                const td = document.createElement('td');
+                td.textContent = sopa[i][j];
+                td.dataset.x = i;
+                td.dataset.y = j;
+                tr.appendChild(td);
+            }
+            tabla.appendChild(tr);
+        }
+
+        // Mostrar palabras a buscar al lado derecho
+        const palabrasDiv = document.getElementById('palabras-lado');
+        palabras.forEach(p => {
+            const span = document.createElement('span');
+            span.textContent = p;
+            span.id = 'palabra_' + p;
+            palabrasDiv.appendChild(span);
+        });
+
+        // Selección de letras
+        let seleccion = [];
+        tabla.addEventListener('mousedown', e => {
+            if (e.target.tagName === 'TD') {
+                seleccion = [[+e.target.dataset.x, +e.target.dataset.y]];
+                e.target.classList.add('selected');
+                tabla.addEventListener('mouseover', seleccionar);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (seleccion.length > 1) {
+                comprobarSeleccion();
+            }
+            limpiarSeleccion();
+            tabla.removeEventListener('mouseover', seleccionar);
+        });
+
+        function seleccionar(e) {
+            if (e.target.tagName === 'TD') {
+                const x = +e.target.dataset.x, y = +e.target.dataset.y;
+                if (!seleccion.some(([sx, sy]) => sx === x && sy === y)) {
+                    seleccion.push([x, y]);
+                    e.target.classList.add('selected');
+                }
+            }
+        }
+
+        function limpiarSeleccion() {
+            document.querySelectorAll('.sopa td.selected').forEach(td => td.classList.remove('selected'));
+            seleccion = [];
+        }
+
+        // Comprobar si la selección es una palabra válida
+        function comprobarSeleccion() {
+            const palabra = seleccion.map(([x, y]) => sopa[x][y]).join('');
+            const palabraInv = seleccion.map(([x, y]) => sopa[x][y]).reverse().join('');
+            let encontrada = null;
+            palabras.forEach(p => {
+                if (palabra === p || palabraInv === p) encontrada = p;
+            });
+            if (encontrada) {
+                seleccion.forEach(([x, y]) => {
+                    tabla.rows[x].cells[y].classList.add('found');
+                });
+                document.getElementById('palabra_' + encontrada).classList.add('found');
+            }
+        }
+
+        // Temporizador elegante de 1 minuto
+        let tiempo = 60;
+        const timer = document.getElementById('timer');
+        const intervalo = setInterval(() => {
+            tiempo--;
+            let min = String(Math.floor(tiempo / 60)).padStart(2, '0');
+            let seg = String(tiempo % 60).padStart(2, '0');
+            timer.textContent = `${min}:${seg}`;
+            if (tiempo <= 0) {
+                clearInterval(intervalo);
+                timer.textContent = "¡Tiempo terminado!";
+                setTimeout(() => {
+                    window.location.href = "../Mesolitico/juegos_Mesolitico.html";
+                }, 1500);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
